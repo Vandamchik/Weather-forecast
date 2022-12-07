@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export function  Favorites() {
+export function  Favorites(): JSX.Element {
 
     return (
         <div>

@@ -36,5 +36,9 @@ export interface IWeatherData {
     }
 }
 
+export interface ForcastProps {
+    cityData?: IWeatherData
+}
+
 
 
