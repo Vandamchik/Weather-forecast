@@ -4,7 +4,6 @@ import { IWeatherFavoritesSlice } from "../../modules/modules";
 
 const FAV_KEY = "favweather";
 
-
 const initialState: IWeatherFavoritesSlice = {
     favStorageData: JSON.parse(localStorage.getItem(FAV_KEY) ?? "[]"),
 }

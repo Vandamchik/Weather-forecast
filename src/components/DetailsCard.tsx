@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { DetailsProps } from "../modules/modules";
 import { useActions } from "../hooks/actions";
 import { useAppSelector } from "../hooks/redux";
@@ -9,16 +9,17 @@ import { useAppSelector } from "../hooks/redux";
 export function DetailsCard(props: DetailsProps): JSX.Element {
     const [detailInfo, setDetailInfo] = useState<{}>({})
     const {  addFavData, removeFavData } = useActions()
-    const [ buttonOption, setButtonOption ] = useState<boolean | null>(null)
     const {  favStorageData } = useAppSelector(state => state.favorites)
-    const { name, temp, humidity, lat, id, feelsLike, lon, tempMax, tempMin, pressure, country, infoData } = props;
+    const navigate = useNavigate()
+    const [ buttonOption, setButtonOption ] = useState<boolean | null>(null)
+    const { name, temp, humidity, lat, id, feelsLike, lon, tempMax, tempMin, pressure, country, infoData, update } = props;
 
     useEffect(() => {
         const find = favStorageData.find(el => el.id === +id!)
         setButtonOption(favStorageData.includes(find))
-        const arr = [];
-        arr.push(infoData)
-        const setObj = arr.reduce((obj: {}, item: any): {} => {
+        const temporaryDataArr = [];
+        temporaryDataArr.push(infoData)
+        const setObj = temporaryDataArr.reduce((obj: {}, item: any): {} => {
             if(item) {
                 obj = {
                     id: item.id,
@@ -27,11 +28,6 @@ export function DetailsCard(props: DetailsProps): JSX.Element {
                     temp: item.main.temp,
                     feelsLike: item.main.feels_like,
                     humidity: item.main.humidity,
-                    pressure: item.main.pressure,
-                    tempMax: item.main.temp_max,
-                    tempMin: item.main.temp_min,
-                    lat: item.coord.lat,
-                    lon: item.coord.lon
                 }
             }
             return obj;
@@ -53,17 +49,21 @@ export function DetailsCard(props: DetailsProps): JSX.Element {
 
     return (
         <Box>
+            <Typography
+                variant="h1"
+                sx={{ fontSize: 30, mt: 2, textAlign: 'center'}}
+            >Detailed weather forecast</Typography>
             <Container maxWidth="sm">
                 <Card sx={{ minWidth: 275, mt: 2}}>
                     <CardContent sx={{display: 'flex', flexDirection: 'column'}}>
-                        <Typography variant="h1" sx={{ fontSize: 30 }} color="text.secondary" gutterBottom>
+                        <Typography variant="h2" sx={{ fontSize: 30 }} color="text.secondary" gutterBottom>
                             City:  { name } / Country: { country }
                         </Typography>
                         <Typography variant="h3" component="div" sx={{display: 'flex', justifyContent:'space-between'}}>
-                            { temp }{'\u00b0'}C
+                            { temp?.toFixed(1) }{'\u00b0'}C
                         </Typography>
                         <Typography variant="h5" component="div">
-                            Feels Like { feelsLike }{'\u00b0'}C
+                            Feels Like { feelsLike?.toFixed(1) }{'\u00b0'}C
                         </Typography>
                         <Typography sx={{ mt: 1.5 }} color="text.secondary">
                             Humidity { humidity }
@@ -72,17 +72,17 @@ export function DetailsCard(props: DetailsProps): JSX.Element {
                             Pressure { pressure }
                         </Typography>
                         <Typography color="text.secondary">
-                            Max-tempreture { tempMax }{'\u00b0'}C
+                            Max-temperature { tempMax?.toFixed(1) }{'\u00b0'}C
                         </Typography>
                         <Typography sx={{ mb: 1.5 }}  color="text.secondary">
-                            Min-tempreture { tempMin }{'\u00b0'}C
+                            Min-temperature { tempMin?.toFixed(1) }{'\u00b0'}C
                         </Typography>
-                        <Typography variant="h6"
-                                    component="div"
-                                    sx={{display: 'flex',
-                                        justifyContent: 'space-between',
-                                        maxWidth: '400px'}
-                                    }
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{display: 'flex',
+                                justifyContent: 'space-between',
+                                maxWidth: '400px'}}
                         >
                             <Typography component="div">
                                 Latitude: { lat }
@@ -92,10 +92,8 @@ export function DetailsCard(props: DetailsProps): JSX.Element {
                             </Typography>
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                        <Link to={"/"} style={{ textDecoration: "none" }} >
-                            <Button size="small">Back</Button>
-                        </Link>
+                    <CardActions sx={{display: 'flex', justifyContent: 'space-evenly'}}>
+                        <Button onClick={() => navigate(-1)} size="small">Back</Button>
                         { !buttonOption ? <Button
                                 value={id}
                                 size="small"
@@ -108,6 +106,10 @@ export function DetailsCard(props: DetailsProps): JSX.Element {
                                 onClick={(event) => removeHandler(event)}
                             >Remove from Favorites</Button>
                         }
+                        <Button
+                            size="small"
+                            onClick={() => update()}
+                        >Update</Button>
                     </CardActions>
                 </Card>
             </Container>

@@ -4,20 +4,13 @@ import { useActions } from '../hooks/actions'
 import { useAppSelector } from '../hooks/redux'
 import { Card, CardActions, CardContent, Button, Typography, Box } from '@mui/material';
 import { ForcastProps } from "../modules/modules";
-import {useGetWeatherIconByTokenQuery} from "../store/services/weatherIconApi";
 
 
 export function ForecastCard(props : ForcastProps):JSX.Element  {
     const {  addFavData, removeFavData } = useActions()
     const {  favStorageData } = useAppSelector(state => state.favorites)
-    const { id, name, country, temp, humidity, feelsLike, weather } = props;
+    const { id, name, country, temp, humidity, feelsLike,update } = props;
     const [isFav, setIsFav] = useState<boolean | null>(null)
-    const [icon, setIcon] = useState(weather?.[0].icon);
-    // const { data } = useGetWeatherIconByTokenQuery(icon!.toString())
-    // console.log(icon)
-    // console.log("props",props)
-
-
 
     useEffect(() => {
         const find = favStorageData.find(el => el.id === id)
@@ -44,16 +37,16 @@ export function ForecastCard(props : ForcastProps):JSX.Element  {
                          {name} / {country}
                     </Typography>
                     <Typography variant="h3" component="div">
-                        { temp }{'\u00b0'}C
+                        { temp?.toFixed(1) }{'\u00b0'}C
                     </Typography>
                     <Typography variant="h5" component="div">
-                        Feels Like { feelsLike }{'\u00b0'}C
+                        Feels Like { feelsLike?.toFixed(1) }{'\u00b0'}C
                      </Typography>
                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         Humidity { humidity }
                      </Typography>
                 </CardContent>
-                <CardActions sx={{display: 'flex', justifyContent: 'space-evenly'}}>
+                <CardActions sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <Link to={`/${id}`} style={{ textDecoration: "none" }} >
                         <Button size="small">Learn More</Button>
                     </Link>
@@ -62,13 +55,17 @@ export function ForecastCard(props : ForcastProps):JSX.Element  {
                         size="small"
                         onClick={(event) => addHandler(event)}
                     >Add to Favorites</Button>
-                        :
+                    :
                         <Button
                             value={id}
                             size="small"
                             onClick={(event) => removeHandler(event)}
                         >Remove from Favorites</Button>
                     }
+                    <Button
+                        size="small"
+                        onClick={() => update()}
+                    >Update</Button>
                 </CardActions>
             </Card>
         </Box>

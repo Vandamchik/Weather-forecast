@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import {  useParams } from 'react-router-dom'
 import { useGetWeatherByTokenQuery } from "../store/services/weatherApi";
 import { DetailsCard } from "../components/DetailsCard";
-import { ErrorBlock } from "../components/ErrorBlock";
-import { LoadingSpiner } from "../components/LoadingSpiner";
+import { ErrorBlock } from "../UI/ErrorBlock";
+import { LoadingSpiner } from "../UI/LoadingSpiner";
 
 
 export function DetailsInformation():JSX.Element {
     const { id: currentCardId } = useParams()
-    const { data: infoData, isLoading, error } = useGetWeatherByTokenQuery(currentCardId!);
+    const { data: infoData, isLoading, error, refetch } = useGetWeatherByTokenQuery(currentCardId!);
 
 
     return (
@@ -17,7 +17,7 @@ export function DetailsInformation():JSX.Element {
             { isLoading ?
                 <LoadingSpiner />
                 :
-                < DetailsCard
+                <DetailsCard
                     id={ currentCardId! }
                     name={ infoData?.name! }
                     temp={ infoData?.main?.temp! }
@@ -30,6 +30,7 @@ export function DetailsInformation():JSX.Element {
                     lon={ infoData?.coord?.lon!}
                     country={ infoData?.sys?.country! }
                     infoData={ infoData! }
+                    update={ refetch }
                 />
             }
         </Fragment>

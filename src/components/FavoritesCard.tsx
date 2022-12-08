@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ForcastProps } from "../modules/modules";
 import { useActions } from "../hooks/actions";
@@ -9,17 +9,17 @@ export function FavoritesCard(props: ForcastProps): JSX.Element {
     const { country, name, temp, humidity, feelsLike, id } = props;
 
     return (
-        <div>
-            <Card sx={{ minWidth: 275 }}>
+        <Box>
+            <Card sx={{ minWidth: 350, m: 2}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 26 }} color="text.secondary" gutterBottom>
                         {name} / {country}
                     </Typography>
                     <Typography variant="h3" component="div">
-                        { temp }{'\u00b0'}C
+                        { temp?.toFixed(1) }{'\u00b0'}C
                     </Typography>
                     <Typography variant="h5" component="div">
-                        Feels Like { feelsLike }{'\u00b0'}C
+                        Feels Like { feelsLike?.toFixed(1) }{'\u00b0'}C
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         Humidity { humidity }
@@ -36,6 +36,6 @@ export function FavoritesCard(props: ForcastProps): JSX.Element {
                         >Remove from Favorites</Button>
                 </CardActions>
             </Card>
-        </div>
+        </Box>
     );
 }

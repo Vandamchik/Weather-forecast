@@ -43,7 +43,7 @@ export interface ForcastProps {
     temp?: number,
     feelsLike?: number,
     humidity?: number,
-    weather?: any[]
+    update?: any
 }
 
 export interface DetailsProps {
@@ -59,6 +59,7 @@ export interface DetailsProps {
     lat?: number,
     lon?: number,
     infoData?: {},
+    update: any
 }
 
 export interface IWeatherFavoritesSlice {

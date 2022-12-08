@@ -17,7 +17,7 @@ export function SelectWeather(props: SelectProps): JSX.Element {
     return (
         <Box sx={{display: 'flex', mb: 2, justifyContent: 'center'}}>
             <Autocomplete
-                disablePortal
+                disableClearable
                 id="combo-box-demo"
                 options={citiesOption}
                 onChange={(event, value) => clickHandler(event, value)}
