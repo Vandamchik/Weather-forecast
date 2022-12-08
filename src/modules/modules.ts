@@ -37,8 +37,38 @@ export interface IWeatherData {
 }
 
 export interface ForcastProps {
-    cityData?: IWeatherData
+    id?: number,
+    name?: string,
+    country?: string,
+    temp?: number,
+    feelsLike?: number,
+    humidity?: number,
+    weather?: any[]
 }
+
+export interface DetailsProps {
+    id?: string,
+    name?: string,
+    country?: string,
+    temp?: number,
+    feelsLike?: number,
+    humidity?: number,
+    pressure?: number,
+    tempMax?: number,
+    tempMin?: number,
+    lat?: number,
+    lon?: number,
+    infoData?: {},
+}
+
+export interface IWeatherFavoritesSlice {
+    favStorageData: any[],
+}
+
+export interface SelectProps {
+    clickHandler: (event: any, value: any) => void
+}
+
 
 
 

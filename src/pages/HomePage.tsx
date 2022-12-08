@@ -1,23 +1,16 @@
 import React, { Fragment, useState} from 'react';
 import { useGetWeatherByTokenQuery } from '../store/services/weatherApi';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { ForcastCard } from "../components/ForcastCard";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import { ForecastCard } from "../components/ForecastCard";
+import { SelectWeather } from "../components/SelectWeather";
+import { ErrorBlock } from "../components/ErrorBlock";
+import { LoadingSpiner } from "../components/LoadingSpiner";
+import { Box }  from '@mui/material';
 
 
-const citiesOption = [
-    { label: "Kyiv", id: "703448" },
-    { label: "London", id: "2643743" },
-    { label: "Paris", id: "2988507" },
-    { label: "Berlin", id: "2950159" },
-    { label: "Madrid", id: "3117735" }
-];
 
 export function HomePage():JSX.Element {
     const [cityId, setCityId] = useState<string>("703448");
-    const { data, isLoading } = useGetWeatherByTokenQuery(cityId);
+    const { data, isLoading, error } = useGetWeatherByTokenQuery(cityId);
 
     const clickHandler = (event: any, value: any): void => {
         setCityId(value.id!)
@@ -25,23 +18,21 @@ export function HomePage():JSX.Element {
 
     return (
         <Fragment>
-            { isLoading ? (<Box sx={{display: 'flex'}} >
-                <CircularProgress sx={{justifyContent: 'center', alignItem: 'center'}} />
-            </Box>)
+            { error &&  <ErrorBlock /> }
+            { isLoading ? <LoadingSpiner />
                 :
-                (<div>
-                    <div>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={citiesOption}
-                            onChange={(event, value) => clickHandler(event, value)}
-                            sx={{width: 300, mt: 5}}
-                            renderInput={(params) => <TextField {...params} label="Choose city" />}
-                        />
-                    </div>
-                    <ForcastCard cityData={data!} />
-                </div>)
+                ( <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <SelectWeather clickHandler={ clickHandler }/>
+                    <ForecastCard
+                        id={ data?.id! }
+                        name={ data?.name! }
+                        country={ data?.sys?.country! }
+                        temp={ data?.main?.temp! }
+                        feelsLike={ data?.main?.feels_like! }
+                        humidity={ data?.main?.feels_like! }
+                        weather={ data?.weather! }
+                    />
+                </Box> )
             }
         </Fragment>
     );

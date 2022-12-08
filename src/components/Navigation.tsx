@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 
 export function Navigation():JSX.Element {
@@ -13,10 +12,10 @@ export function Navigation():JSX.Element {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Weather Forcast
                     </Typography>
-                    <Link to={"/"}>
+                    <Link to={"/"} style={{ textDecoration: "none" }}>
                         <Button color="inherit">Home Page</Button>
                     </Link>
-                    <Link to={"/favorites"}>
+                    <Link to={"/favorites"} style={{ textDecoration: "none" }}>
                         <Button color="inherit">Favorites</Button>
                     </Link>
                 </Toolbar>
