@@ -36,7 +36,7 @@ export interface IWeatherData {
     }
 }
 
-export interface ForcastProps {
+export interface ForecastProps {
     id?: number,
     name?: string,
     country?: string,
@@ -59,7 +59,7 @@ export interface DetailsProps {
     lat?: number,
     lon?: number,
     infoData?: {},
-    update: any
+    update: () => any
 }
 
 export interface IWeatherFavoritesSlice {

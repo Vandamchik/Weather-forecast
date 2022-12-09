@@ -30,7 +30,7 @@ export function HomePage():JSX.Element {
                         temp={ data?.main?.temp! }
                         feelsLike={ data?.main?.feels_like! }
                         humidity={ data?.main?.feels_like! }
-                        update={ refetch }
+                        update={ refetch! }
                     />
                 </Box> )
             }
